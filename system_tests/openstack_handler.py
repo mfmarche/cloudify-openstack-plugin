@@ -224,6 +224,8 @@ class OpenstackHandler(BaseHandler):
 
     def after_bootstrap(self, provider_context):
         super(OpenstackHandler, self).after_bootstrap(provider_context)
+        self.logger.error(str(provider_context.keys()))
+        self.logger.warning(str(provider_context))
         resources = provider_context['resources']
         agent_keypair = resources['agents_keypair']
         management_keypair = resources['management_keypair']
