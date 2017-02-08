@@ -473,7 +473,14 @@ def get_server_by_context(nova_client):
 
 def _set_network_and_ip_runtime_properties(server):
     ips = {}
-    _, default_network_ips = server.networks.items()[0]
+    try:
+        _, default_network_ips = server.networks.items()[0]
+    except IndexError:
+        raise NonRecoverableError(
+            'The server was created but not attached to a network. '
+            'Cloudify requires that a server is connected to '
+            'at least one port.'
+        )
     manager_network_ip = None
     management_network_name = server.metadata.get(
         'cloudify_management_network_name')
