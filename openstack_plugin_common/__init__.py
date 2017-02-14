@@ -783,6 +783,9 @@ class NeutronClientWithSugar(OpenStackClient):
     def get_quota(self, obj_type_single):
         tenant_id = self.get_quotas_tenant()['tenant']['tenant_id']
         quotas = self.show_quota(tenant_id)['quota']
+        if obj_type_single not in quotas:
+            # some OpenStack versions do not have all requested quoata types
+            quotas[obj_type_single]=-1
         return quotas[obj_type_single]
 
     def cosmo_list_prefixed(self, obj_type_single, name_prefix):
